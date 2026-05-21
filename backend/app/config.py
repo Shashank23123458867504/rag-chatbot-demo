@@ -4,7 +4,7 @@ import os
 from typing import Final, Optional
 from dotenv import load_dotenv
 from pathlib import Path
-from app.utils import logger
+from app.utils.logger import logger
 
 
 def _validate_path(path: str) -> str:
