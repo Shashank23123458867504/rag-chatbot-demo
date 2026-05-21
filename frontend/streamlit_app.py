@@ -80,7 +80,7 @@ def ensure_bucket(bucket: str) -> Path:
         bucket_path = DATA_DIR / bucket
         bucket_path.mkdir(parents=True, exist_ok=True)
         return bucket_path
-    except Exception as e:
+    except Exception:
         logger.exception(
             f"Failed to create/access target data bucket '{bucket}'"
         )
