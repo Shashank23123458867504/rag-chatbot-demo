@@ -9,9 +9,12 @@ from app.utils import logger
 
 def _validate_path(path: str) -> str:
     """Ensure path exists and create if necessary."""
-    Path(path).mkdir(parents=True, exist_ok=True)
-    return path
-
+    try:
+        Path(path).mkdir(parents=True, exist_ok=True)
+        return path
+    except Exception as e:
+        logger.error(f"Failed to validate/create path '{path}': {e}")
+        raise
 
 def _validate_int(name: str, value: str, min_val: int, max_val: int) -> int:
     """Validate and convert integer environment variables."""
