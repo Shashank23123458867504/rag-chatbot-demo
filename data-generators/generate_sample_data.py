@@ -20,6 +20,7 @@ import random
 from pathlib import Path
 from typing import Dict, Any, List
 from dotenv import load_dotenv
+from app.utils.logger import logger
 
 class DataGenerator:
     """Main data generator class"""
@@ -184,11 +185,15 @@ class DataGenerator:
     
     def _generate_general_data(self, output_dir: Path, volume: str):
         """Generate general domain data"""
-        self._generate_fallback_data(output_dir, volume, "general")
+        try:
+            self._generate_fallback_data(output_dir, volume, "general")
+        except Exception:
+            logger.exception("Failed to generate general data")
+            raise
     
     def _generate_fallback_data(self, output_dir: Path, volume: str, domain: str):
         """Generate basic fallback data when domain generators are not available"""
-        print(f" Generating basic {domain} data...")
+        logger.info(f" Generating basic {domain} data...")
         
         # Determine number of items based on volume
         item_counts = {"small": 5, "medium": 15, "large": 30}
