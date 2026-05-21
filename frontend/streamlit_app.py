@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 from typing import Dict, List, Optional, Set, Tuple
 from uuid import uuid4
+from app.utils.logger import logger
 
 import requests
 import streamlit as st
@@ -75,9 +76,15 @@ def run_command(command: List[str], cwd: Path, env: Dict[str, str]) -> Tuple[boo
 
 def ensure_bucket(bucket: str) -> Path:
     """Ensure the target data bucket exists and return its path."""
-    bucket_path = DATA_DIR / bucket
-    bucket_path.mkdir(parents=True, exist_ok=True)
-    return bucket_path
+    try:
+        bucket_path = DATA_DIR / bucket
+        bucket_path.mkdir(parents=True, exist_ok=True)
+        return bucket_path
+    except Exception as e:
+        logger.exception(
+            f"Failed to create/access target data bucket '{bucket}'"
+        )
+        raise
 
 
 def list_bucket_contents(bucket: str) -> List[Dict[str, str]]:
